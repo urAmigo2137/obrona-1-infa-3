@@ -14,16 +14,14 @@ public:
     Harmonogram& operator=(const Harmonogram& inny);
 
     void dodajCzas(const Czas& czas);
-    int podajIlosc();
-    Czas& podajCzas(int indeks);
+    int podajIlosc() const;
     Czas& operator[](int indeks);
-    Czas sumaCzasow();
-    void wypisz();
+    const Czas& operator[](int indeks) const;
+    Czas sumaCzasow() const;
+    void wypisz() const;
 
-    bool operator<(const Czas& drugi);
-   
-bool operator<(const Harmonogram& other) const;
-bool operator==(const Harmonogram& other) const;
-
+    bool operator<(const Harmonogram& other) const;
+    bool operator==(const Harmonogram& other) const;
+    
     Harmonogram kopiujDoZakresu(const Czas& zakres) const;
 };
