@@ -9,7 +9,7 @@ Harmonogram::Harmonogram()
 Harmonogram::Harmonogram(const Harmonogram& inny)
 {
     ilosc = inny.ilosc;
-
+    
     if (ilosc > 0)
     {
         czasy = new Czas[ilosc];
@@ -26,11 +26,11 @@ Harmonogram& Harmonogram::operator=(const Harmonogram& inny)
 {
     if (this == &inny)
         return *this;
-
+    
     delete[] czasy;
-
+    
     ilosc = inny.ilosc;
-
+    
     if (ilosc > 0)
     {
         czasy = new Czas[ilosc];
@@ -41,7 +41,7 @@ Harmonogram& Harmonogram::operator=(const Harmonogram& inny)
     {
         czasy = nullptr;
     }
-
+    
     return *this;
 }
 
@@ -53,25 +53,20 @@ Harmonogram::~Harmonogram()
 void Harmonogram::dodajCzas(const Czas& czas)
 {
     Czas* nowaTablica = new Czas[ilosc + 1];
-
+    
     for (int i = 0; i < ilosc; i++)
         nowaTablica[i] = czasy[i];
-
+    
     nowaTablica[ilosc] = czas;
-
+    
     delete[] czasy;
     czasy = nowaTablica;
     ilosc++;
 }
 
-int Harmonogram::podajIlosc()
+int Harmonogram::podajIlosc() const
 {
     return ilosc;
-}
-
-Czas& Harmonogram::podajCzas(int indeks)
-{
-    return czasy[indeks];
 }
 
 Czas& Harmonogram::operator[](int indeks)
@@ -79,7 +74,12 @@ Czas& Harmonogram::operator[](int indeks)
     return czasy[indeks];
 }
 
-Czas Harmonogram::sumaCzasow()
+const Czas& Harmonogram::operator[](int indeks) const
+{
+    return czasy[indeks];
+}
+
+Czas Harmonogram::sumaCzasow() const
 {
     Czas suma;
     for (int i = 0; i < ilosc; i++)
@@ -87,29 +87,17 @@ Czas Harmonogram::sumaCzasow()
     return suma;
 }
 
-void Harmonogram::wypisz()
+void Harmonogram::wypisz() const
 {
-    for (int i = 0; i < ilosc; i++)
-        czasy[i].wypisz();
-}
-
-Harmonogram Harmonogram::kopiujDoZakresu(const Czas& zakres) const
-{
-    Harmonogram nowy;
-
     for (int i = 0; i < ilosc; i++)
     {
-        if (czasy[i] < zakres)
-            nowy.dodajCzas(czasy[i]);
+        czasy[i].wypisz();
     }
-    return nowy;
 }
 
 bool Harmonogram::operator<(const Harmonogram& other) const
 {
-    Czas sumaThis = const_cast<Harmonogram*>(this)->sumaCzasow();
-    Czas sumaOther = const_cast<Harmonogram&>(other).sumaCzasow();
-    return sumaThis < sumaOther;
+    return sumaCzasow() < other.sumaCzasow();
 }
 
 bool Harmonogram::operator==(const Harmonogram& other) const
@@ -123,4 +111,16 @@ bool Harmonogram::operator==(const Harmonogram& other) const
             return false;
     }
     return true;
+}
+
+Harmonogram Harmonogram::kopiujDoZakresu(const Czas& zakres) const
+{
+    Harmonogram nowy;
+    
+    for (int i = 0; i < ilosc; i++)
+    {
+        if (czasy[i] < zakres)
+            nowy.dodajCzas(czasy[i]);
+    }
+    return nowy;
 }
